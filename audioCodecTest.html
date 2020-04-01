@@ -1,0 +1,140 @@
+<!-- Thomas Deppisch, Nils Meyer-Kahlen, 2020 -->
+
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+
+<head>
+    <title>Multichannel Audio Codec Tester</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="audioCodecTest.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <div class="outerContainer">
+        <h3> Test Player for Multichannel Audio in Different Codecs </h3>
+        This is a small application for testing browser support of multichannel audio files.<br>
+        Currently we provide wav, opus, vorbis (ogg), m4a (aac), flac and mp3 files containing 1 to 32 channels.<br>
+        If a specific codec/channel combination is not shown, it was not possible to encode it via ffmpeg and the channel layout is probably not supported by the codec.<br>
+        <br>
+        The test files contain spoken numbers, where each number is assigned to an individual channel. Even channels are sent to the left output and odd channels are sent to the right output to recognize if the channel order is mixed up.
+
+        <div class="innerContainer">
+            <div class="dropdown">
+                <button class="btn btn-outline-dark dropdown-toggle" id="dropdownButton" type="button" data-toggle="dropdown">Choose File
+                    <span class="caret"></span>
+                </button>
+                <div class="dropdown-menu scrollable-menu">
+                </div>
+            </div>
+            <div id="audioDiv">
+                <audio id="audioElem" controls preload="auto"></audio>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var dir = "./audio/";
+        var wavFns = ["1.wav", "2.wav", "3.wav", "4.wav", "5.wav", "6.wav", "7.wav", "8.wav", "9.wav", "10.wav", "16.wav", "24.wav", "25.wav", "31.wav", "32.wav"];
+        var opusFns = ["1.opus", "2.opus", "3.opus", "4.opus", "5.opus", "6.opus", "7.opus", "8.opus", "9.opus", "10.opus", "16.opus", "24.opus", "25.opus", "31.opus", "32.opus"];
+        var oggFns = ["1.ogg", "2.ogg", "3.ogg", "4.ogg", "5.ogg", "6.ogg", "7.ogg", "8.ogg", "9.ogg", "10.ogg", "16.ogg", "24.ogg", "25.ogg", "31.ogg", "32.ogg"];
+        var m4aFns = ["1.m4a", "2.m4a", "4.m4a", "5.m4a", "6.m4a", "8.m4a"];
+        var flacFns = ["1.flac", "2.flac", "3.flac", "4.flac", "5.flac", "6.flac", "7.flac", "8.flac"];
+        var mp3Fns = ["1.mp3", "2.mp3"];
+        
+
+        var numChannels = 0;
+
+        var AudioContext = window.AudioContext // Default
+            || window.webkitAudioContext; // safari
+
+        var context = new AudioContext(); // A new context is created on every load...
+        console.log(context);
+        var audioElement = $('#audioElem')[0];
+        var sourceNode = context.createMediaElementSource(audioElement);
+
+        // build dropdown
+        $('.dropdown-menu').append($('<h6 class="dropdown-header">wav</h6>'));
+        for (let i in wavFns) {
+            $('.dropdown-menu').append($('<a class="dropdown-item" href="#"></a>').html(wavFns[i]));
+        }
+        $('.dropdown-menu').append($('<div class="dropdown-divider"></div>'));
+        $('.dropdown-menu').append($('<h6 class="dropdown-header">opus</h6>'));
+        for (let i in opusFns) {
+            $('.dropdown-menu').append($('<a class="dropdown-item" href="#"></a>').html(opusFns[i]));
+        }
+        $('.dropdown-menu').append($('<div class="dropdown-divider"></div>'));
+        $('.dropdown-menu').append($('<h6 class="dropdown-header">vorbis (ogg)</h6>'));
+        for (let i in oggFns) {
+            $('.dropdown-menu').append($('<a class="dropdown-item" href="#"></a>').html(oggFns[i]));
+        }
+        $('.dropdown-menu').append($('<div class="dropdown-divider"></div>'));
+        $('.dropdown-menu').append($('<h6 class="dropdown-header">m4a (aac)</h6>'));
+        for (let i in m4aFns) {
+            $('.dropdown-menu').append($('<a class="dropdown-item" href="#"></a>').html(m4aFns[i]));
+        }
+        $('.dropdown-menu').append($('<div class="dropdown-divider"></div>'));
+        $('.dropdown-menu').append($('<h6 class="dropdown-header">flac</h6>'));
+        for (let i in flacFns) {
+            $('.dropdown-menu').append($('<a class="dropdown-item" href="#"></a>').html(flacFns[i]));
+        }
+        $('.dropdown-menu').append($('<div class="dropdown-divider"></div>'));
+        $('.dropdown-menu').append($('<h6 class="dropdown-header">mp3</h6>'));
+        for (let i in mp3Fns) {
+            $('.dropdown-menu').append($('<a class="dropdown-item" href="#"></a>').html(mp3Fns[i]));
+        }
+
+        $('.dropdown-item').on('click', function () {
+            $('#dropdownButton').text($(this).text());
+            loadSound($(this).text());
+        });
+
+        function loadSound(fn) {
+            audioElement.src = dir + fn;
+            let numChannels = fn.split('.')[0];
+
+            var splitter = context.createChannelSplitter(numChannels);
+            var merger = context.createChannelMerger(numChannels);
+
+            // show the nodes
+            console.log(splitter)
+            console.log(merger)
+            console.log(context.destination)
+            console.log(numChannels);
+
+            // connect the source to the splitter
+            sourceNode.connect(splitter);
+
+            // hook up all the even inputs to the left and the odd inputs to the right output
+            for (chan = 0; chan < numChannels; chan++) {
+                if (chan % 2 == 0) {
+                    splitter.connect(merger, chan, 0);
+                }
+                else {
+                    splitter.connect(merger, chan, 1);
+                }
+            }
+
+            merger.connect(context.destination);
+
+            if (context.state !== "running") {
+                context.resume();
+                console.log("resuming context");
+            }
+        }
+    </script>
+</body>
+
+</html>

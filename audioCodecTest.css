@@ -1,0 +1,23 @@
+.outerContainer {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 60px;
+}
+
+.innerContainer {
+    margin-top: 80px;
+}
+
+#dropdownButton {
+    width: 150px;
+    margin-right: 100px;
+    float: left;
+}
+
+.scrollable-menu {
+    height: auto;
+    max-height: 240px;
+    overflow-x: hidden;
+    float: left;
+}
