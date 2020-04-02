@@ -16,10 +16,10 @@ do
         -i './audio/'$numChannels'.wav' \
         -n -ac $numChannels -c:a libopus -mapping_family 255 -b:a $bitrate'k' -vn $outdir'/'$numChannels'.opus'
 
-    echo '\n OPUS in WebM \n'
-    ffmpeg \
-        -i './audio/'$numChannels'.wav' \
-        -n -ac $numChannels -c:a libopus -mapping_family 255 -b:a $bitrate'k' -vn -f webm -dash 1 $outdir'/'$numChannels'.opus'
+    # echo '\n OPUS in WebM \n'
+    # ffmpeg \
+    #     -i './audio/'$numChannels'.wav' \
+    #     -n -ac $numChannels -c:a libopus -mapping_family 255 -b:a $bitrate'k' -vn -f webm -dash 1 $outdir'/'$numChannels'.opus'
 
     echo '\n AAC \n'
     ffmpeg \
