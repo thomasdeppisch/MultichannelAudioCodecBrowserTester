@@ -27,9 +27,8 @@
         <h3> Test Player for Multichannel Audio in Different Codecs </h3>
         This is a small application for testing browser support of multichannel audio files.<br>
         Currently we provide wav, opus, vorbis (ogg), m4a (aac), flac and mp3 files containing 1 to 32 channels.<br>
-        If a specific codec/channel combination is not shown, it was not possible to encode it via ffmpeg and the channel layout is probably not supported by the codec.<br>
-        <br>
-        The test files contain spoken numbers, where each number is assigned to an individual channel. Even channels are sent to the left output and odd channels are sent to the right output to recognize if the channel order is mixed up.
+        The encoded files were created from the wav files via ffmpeg. If a specific codec/channel combination is not shown but exists as wav, it was not possible to encode it via ffmpeg and the channel layout is probably not supported by the codec.<br>
+        The test files contain spoken numbers, where each number is assigned to an individual channel. Even channels are sent to the left output and odd channels are sent to the right output to recognize if the channel order is mixed up (as happens sometimes with aac).
 
         <div class="innerContainer">
             <div class="dropdown">
@@ -81,7 +80,7 @@
             $('.dropdown-menu').append($('<a class="dropdown-item" href="#"></a>').html(oggFns[i]));
         }
         $('.dropdown-menu').append($('<div class="dropdown-divider"></div>'));
-        $('.dropdown-menu').append($('<h6 class="dropdown-header">m4a (aac)</h6>'));
+        $('.dropdown-menu').append($('<h6 class="dropdown-header">aac (m4a)</h6>'));
         for (let i in m4aFns) {
             $('.dropdown-menu').append($('<a class="dropdown-item" href="#"></a>').html(m4aFns[i]));
         }
