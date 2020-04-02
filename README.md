@@ -1,5 +1,5 @@
 # MultichannelAudioCodecBrowserTester
-Test player for multichannel audio in different codecs, checkout [here](https://thomasdeppisch.github.io/MultichannelAudioCodecBrowserTester/audioCodecTest.html).
+Test player for multichannel audio in different codecs, [check it out](https://thomasdeppisch.github.io/MultichannelAudioCodecBrowserTester/audioCodecTest.html).
 
 This is a small application for testing browser support of multichannel audio files.
 Currently we provide wav, opus, vorbis (ogg), m4a (aac), flac and mp3 files containing 1 to 32 channels.
