@@ -26,13 +26,19 @@
     <div class="outerContainer">
         <h3> Test Player for Multichannel Audio in Different Codecs </h3>
         This is a small application for testing browser support of multichannel audio files.<br>
-        Currently we provide wav, opus, vorbis (ogg), aac (m4a), flac and mp3 files containing 1 to 32 (or the individual codec maximum number of) channels.<br>
-        The encoded files were created from the wav files via ffmpeg. If a specific codec/channel combination is not shown but exists as wav, it was not possible to encode it via ffmpeg and the channel layout is probably not supported by the codec.<br>
-        The test files contain spoken numbers, where each number is assigned to an individual channel. Even channels are sent to the left output and odd channels are sent to the right output to recognize if the channel order is mixed up (as sometimes happens with aac).
+        Currently we provide wav, opus, vorbis (ogg), aac (m4a), flac and mp3 files containing 1 to 32 (or the
+        individual codec maximum number of) channels.<br>
+        The encoded files were created from the wav files via ffmpeg. If a specific codec/channel combination is not
+        shown but exists as wav, it was not possible to encode it via ffmpeg and the channel layout is probably not
+        supported by the codec.<br>
+        The test files contain spoken numbers, where each number is assigned to an individual channel. Even channels are
+        sent to the left output and odd channels are sent to the right output to recognize if the channel order is mixed
+        up (as sometimes happens with aac).
 
         <div class="innerContainer">
             <div class="dropdown">
-                <button class="btn btn-outline-dark dropdown-toggle" id="dropdownButton" type="button" data-toggle="dropdown">Choose File
+                <button class="btn btn-outline-dark dropdown-toggle" id="dropdownButton" type="button"
+                    data-toggle="dropdown">Choose File
                     <span class="caret"></span>
                 </button>
                 <div class="dropdown-menu scrollable-menu">
@@ -41,6 +47,21 @@
             <div id="audioDiv">
                 <audio id="audioElem" controls preload="auto"></audio>
             </div>
+        </div>
+        <br>
+        
+        <div class="tableContainer">
+            Below, we list if audio codecs are supported in general, by checking canPlayType() of the HTML audio element.
+            Note that general codec support does not mean that arbitrary channel counts are supported.
+            <table class="table table-sm table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">codec</th>
+                        <th scope="col">support</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
         </div>
     </div>
 
@@ -52,7 +73,7 @@
         var m4aFns = ["1.m4a", "2.m4a", "4.m4a", "5.m4a", "6.m4a", "8.m4a"];
         var flacFns = ["1.flac", "2.flac", "3.flac", "4.flac", "5.flac", "6.flac", "7.flac", "8.flac"];
         var mp3Fns = ["1.mp3", "2.mp3"];
-        
+
 
         var numChannels = 0;
 
@@ -99,6 +120,25 @@
             $('#dropdownButton').text($(this).text());
             loadSound($(this).text());
         });
+
+        // build table
+        var wav = audioElement.canPlayType('audio/wav; codecs="1"');
+        var flac = (audioElement.canPlayType('audio/x-flac;') || audioElement.canPlayType('audio/flac;'));
+        var opus = audioElement.canPlayType('audio/ogg; codecs="opus"');
+        var webm = audioElement.canPlayType('audio/webm; codecs="opus"');
+        var ogg = audioElement.canPlayType('audio/ogg; codecs="vorbis"');
+        var m4a = (audioElement.canPlayType('audio/x-m4a;') || audioElement.canPlayType('audio/m4a;') || audioElement.canPlayType('audio/aac;'));
+        var mp4 = (audioElement.canPlayType('audio/x-mp4;') || audioElement.canPlayType('audio/mp4;') || audioElement.canPlayType('audio/aac;'));
+        var mp3 = audioElement.canPlayType('audio/mp3;');
+        var caf = audioElement.canPlayType('audio/x-caf;');
+        var dolby = audioElement.canPlayType('audio/mp4; codecs="ec-3"');
+
+        var allCodecSupports = [wav, flac, opus, webm, ogg, m4a, mp4, mp3, caf, dolby];
+        var allCodecNames = ['wav', 'flac', 'opus', 'webm (opus)', 'ogg (vorbis)', 'm4a (aac)', 'mp4 (aac)', 'mp3', 'caf', 'dolby'];
+
+        for (let i in allCodecSupports) {
+            $('#tableBody').append('<tr><td scope="row">' + allCodecNames[i] + '</td><td>' + (allCodecSupports[i] || 'no') + '</td></tr>');
+        }
 
         function loadSound(fn) {
             audioElement.src = dir + fn;

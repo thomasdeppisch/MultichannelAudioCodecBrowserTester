@@ -16,27 +16,32 @@ do
         -i './audio/'$numChannels'.wav' \
         -n -ac $numChannels -c:a libopus -mapping_family 255 -b:a $bitrate'k' -vn $outdir'/'$numChannels'.opus'
 
-    # echo '\n OPUS in WebM \n'
+    # echo '\n OPUS in CAF \n' # -> does not work for > 2 channels
+    # ffmpeg \
+    #     -i './audio/'$numChannels'.wav' \
+    #     -n -ac $numChannels -c:a libopus -mapping_family 255 -b:a $bitrate'k' -vn $outdir'/'$numChannels'.caf'
+
+    # echo '\n OPUS in WebM \n' # -> same results as opus
     # ffmpeg \
     #     -i './audio/'$numChannels'.wav' \
     #     -n -ac $numChannels -c:a libopus -mapping_family 255 -b:a $bitrate'k' -vn -f webm -dash 1 $outdir'/'$numChannels'.opus'
 
-    echo '\n AAC \n'
+    echo '\n AAC \n' # -> only up to 8 channels
     ffmpeg \
         -i './audio/'$numChannels'.wav' \
         -n -ac $numChannels -c:a libfdk_aac -profile:a 'aac_low' -b:a $bitrate'k' -vn $outdir'/'$numChannels'.m4a'
 
-    # echo '\n HE-AAC \n'
+    # echo '\n HE-AAC \n' # -> same results as aac los
     # ffmpeg \
     #     -i './audio/'$numChannels'.wav' \
     #     -n -ac $numChannels -c:a libfdk_aac -profile:a 'aac_he' -b:a $bitrate'k' -vn $outdir'/'$numChannels'_he.m4a'
 
-    # echo '\n HE-AAC v2 \n'
+    # echo '\n HE-AAC v2 \n' # -> less support than aac_low
     # ffmpeg \
     #     -i './audio/'$numChannels'.wav' \
     #     -n -ac $numChannels -c:a libfdk_aac -profile:a 'aac_he_v2' -b:a $bitrate'k' -vn $outdir'/'$numChannels'_he2.m4a'
 
-    echo '\n MP3 \n'
+    echo '\n MP3 \n' # -> only working for mono/stereo
     ffmpeg \
         -i './audio/'$numChannels'.wav' \
         -n -ac $numChannels -c:a libmp3lame -b:a $bitrate'k' -vn $outdir'/'$numChannels'.mp3'
@@ -46,7 +51,7 @@ do
         -i './audio/'$numChannels'.wav' \
         -n -ac $numChannels -c:a libvorbis -b:a $bitrate'k' -vn $outdir'/'$numChannels'.ogg'
 
-    echo '\n FLAC \n'
+    echo '\n FLAC \n' # -> only up to 8 channels
     ffmpeg \
         -i './audio/'$numChannels'.wav' \
         -n -ac $numChannels -c:a flac -ch_mode 'indep' -b:a $bitrate'k' -vn $outdir'/'$numChannels'.flac'
