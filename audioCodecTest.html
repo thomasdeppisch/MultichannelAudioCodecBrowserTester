@@ -137,7 +137,7 @@
         var allCodecNames = ['wav', 'flac', 'opus', 'webm (opus)', 'ogg (vorbis)', 'm4a (aac)', 'mp4 (aac)', 'mp3', 'caf', 'dolby'];
 
         for (let i in allCodecSupports) {
-            $('#tableBody').append('<tr><td scope="row">' + allCodecNames[i] + '</td><td>' + (allCodecSupports[i] || 'no') + '</td></tr>');
+            $('#tableBody').append('<tr><td scope="row">' + allCodecNames[i] + '</td><td>' + ((allCodecSupports[i]) ? 'yes' : 'no') + '</td></tr>');
         }
 
         function loadSound(fn) {
